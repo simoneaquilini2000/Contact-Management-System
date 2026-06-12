@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/contact-management-system
+          jwk-set-uri: http://keycloak:8180/realms/contact-management-system/protocol/openid-connect/certs
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: TRACE

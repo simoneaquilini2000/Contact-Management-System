@@ -1,15 +1,6 @@
-CREATE TABLE IF NOT EXISTS users (
-    id       BIGSERIAL     PRIMARY KEY,
-    name     VARCHAR(100)  NOT NULL,
-    surname  VARCHAR(100)  NOT NULL,
-    email    VARCHAR(255)  NOT NULL UNIQUE,
-    password VARCHAR(1000)  NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
 CREATE TABLE IF NOT EXISTS contacts (
     id       BIGSERIAL     PRIMARY KEY,
-    user_id  BIGINT        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id  VARCHAR(36)   NOT NULL,
     name     VARCHAR(100)  NOT NULL,
     surname  VARCHAR(100)  NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

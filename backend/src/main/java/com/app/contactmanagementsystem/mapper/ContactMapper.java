@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.app.contactmanagementsystem.controller.dto.ContactCreationDTO;
 import com.app.contactmanagementsystem.controller.dto.ContactResponseDTO;
-import com.app.contactmanagementsystem.model.ContactEntity;
+import com.app.contactmanagementsystem.repository.model.ContactEntity;
 
 @Component
 public class ContactMapper {

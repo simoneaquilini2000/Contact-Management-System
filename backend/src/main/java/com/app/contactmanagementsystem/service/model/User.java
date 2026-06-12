@@ -1,4 +1,6 @@
-package com.app.contactmanagementsystem.controller.dto;
+package com.app.contactmanagementsystem.service.model;
+
+import java.util.UUID;
 
 import lombok.Data;
 import lombok.Getter;
@@ -9,9 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class ContactCreationDTO {
+public class User {
 
+    private UUID id;
     private String name;
-
-    private String surname;
+    private String email;
 }

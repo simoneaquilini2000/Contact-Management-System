@@ -1,9 +1,13 @@
 package com.app.contactmanagementsystem.service;
 
-import org.springframework.stereotype.Service;
+import java.util.UUID;
 
-import com.app.contactmanagementsystem.model.UserEntity;
-import com.app.contactmanagementsystem.repository.UsersRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.stereotype.Service;
+import com.app.contactmanagementsystem.service.model.User;
+import com.app.contactmanagementsystem.utils.AuthUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +17,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UsersRepository usersRepository;
+    private final AuthUtils authUtils;
 
 
-    public UserEntity getCurrentUser() {
-        // For simplicity, we return a fixed user ID. In a real application, this would be dynamic.
-        log.info("Fetching current user ID");
-        return usersRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+    public User getCurrentUser() {
+        UUID userId = UUID.fromString(authUtils.getCurrentUserId());
+        String userName = authUtils.getClaim("name");
+        String userEmail = authUtils.getClaim("email");
+
+        User user = new User();
+        user.setId(userId);
+        user.setName(userName);
+        user.setEmail(userEmail);
+
+        return user;
     }
 
 }
