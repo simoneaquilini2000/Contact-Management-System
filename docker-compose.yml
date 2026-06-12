@@ -1,0 +1,121 @@
+services:
+
+  # ──────────────────────────────────────────────
+  # PostgreSQL
+  # ──────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-appdb}
+      POSTGRES_USER: ${POSTGRES_USER:-appuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/scripts:/docker-entrypoint-initdb.d:ro   # *.sql / *.sh run in alphabetical order
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-appuser} -d ${POSTGRES_DB:-appdb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  # ──────────────────────────────────────────────
+  # Keycloak (authorization server)
+  # ──────────────────────────────────────────────
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:24.0
+  #   container_name: keycloak
+  #   restart: unless-stopped
+  #   command: start-dev          # use 'start' + TLS in production
+  #   environment:
+  #     KC_DB: postgres
+  #     KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-appdb}
+  #     KC_DB_USERNAME: ${POSTGRES_USER:-appuser}
+  #     KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+  #     KC_DB_SCHEMA: keycloak
+  #     KEYCLOAK_ADMIN: ${KC_ADMIN_USER:-admin}
+  #     KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD:-admin}
+  #     KC_HTTP_PORT: 8180
+  #     KC_HOSTNAME_STRICT: "false"
+  #     KC_HOSTNAME_STRICT_HTTPS: "false"
+  #     KC_LOG_LEVEL: INFO
+  #   ports:
+  #     - "8180:8180"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -sf http://localhost:8180/health/ready || exit 1"]
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 10
+  #     start_period: 60s
+  #   networks:
+  #     - backend
+  #     - frontend
+
+  # ──────────────────────────────────────────────
+  # Spring Boot REST service
+  # ──────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend                 # folder containing pom.xml
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-appdb}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-appuser}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      #SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8180/realms/${KC_REALM:-app-realm}
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      # keycloak:
+      #   condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 45s
+    networks:
+      - backend
+      - frontend
+
+  # ──────────────────────────────────────────────
+  # Angular frontend (served by Nginx)
+  # ──────────────────────────────────────────────
+  # frontend:
+  #   build:
+  #     context: ./frontend                # folder containing package.json / angular.json
+  #     dockerfile: Dockerfile
+  #   container_name: frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4200:80"
+  #   depends_on:
+  #     backend:
+  #       condition: service_healthy
+  #   networks:
+  #     - frontend
+
+# ──────────────────────────────────────────────
+# Named volumes
+# ──────────────────────────────────────────────
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
