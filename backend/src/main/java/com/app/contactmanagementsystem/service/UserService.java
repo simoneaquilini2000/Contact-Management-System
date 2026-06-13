@@ -1,11 +1,10 @@
 package com.app.contactmanagementsystem.service;
 
 import java.util.UUID;
-
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+
+import com.app.contactmanagementsystem.controller.dto.UserDTO;
+import com.app.contactmanagementsystem.mapper.UserMapper;
 import com.app.contactmanagementsystem.service.model.User;
 import com.app.contactmanagementsystem.utils.AuthUtils;
 
@@ -19,6 +18,8 @@ public class UserService {
 
     private final AuthUtils authUtils;
 
+    private final UserMapper userMapper;
+
 
     public User getCurrentUser() {
         UUID userId = UUID.fromString(authUtils.getCurrentUserId());
@@ -31,6 +32,11 @@ public class UserService {
         user.setEmail(userEmail);
 
         return user;
+    }
+
+    public UserDTO getCurrentUserDetails() {
+        User currentUser = getCurrentUser();
+        return userMapper.toDto(currentUser);
     }
 
 }

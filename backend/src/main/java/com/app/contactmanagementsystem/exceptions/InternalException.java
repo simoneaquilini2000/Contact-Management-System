@@ -8,5 +8,7 @@ public abstract class InternalException extends RuntimeException {
         super(message);
     }
 
-    abstract public ErrorResponse getAsErrorResponse();
+    public ErrorResponse getAsErrorResponse() {
+        return new ErrorResponse(getMessage());
+    }
 }

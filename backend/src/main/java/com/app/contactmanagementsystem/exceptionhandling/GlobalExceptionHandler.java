@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.app.contactmanagementsystem.exceptionhandling.model.ErrorResponse;
+import com.app.contactmanagementsystem.exceptions.AuthenticationNotFoundException;
 import com.app.contactmanagementsystem.exceptions.ContactNotFoundException;
 import com.app.contactmanagementsystem.exceptions.InternalException;
 
@@ -19,6 +20,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorResponse handleContactNotFoundException(ContactNotFoundException exception) {
+        return logAndReturn(exception);
+    }
+
+    @ExceptionHandler(AuthenticationNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorResponse handleAuthenticationNotFoundException(AuthenticationNotFoundException exception) {
         return logAndReturn(exception);
     }
 

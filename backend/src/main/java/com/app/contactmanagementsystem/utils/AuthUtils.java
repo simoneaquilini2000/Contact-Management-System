@@ -1,11 +1,11 @@
 package com.app.contactmanagementsystem.utils;
 
-import java.util.UUID;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
+
+import com.app.contactmanagementsystem.exceptions.AuthenticationNotFoundException;
 
 @Component
 public class AuthUtils {
@@ -15,7 +15,7 @@ public class AuthUtils {
         if (auth instanceof JwtAuthenticationToken jwtAuth) {
             return jwtAuth.getToken();
         }
-        throw new IllegalStateException("No JWT authentication found in security context");
+        throw new AuthenticationNotFoundException("No JWT authentication found in security context");
     }
 
     public String getCurrentUserId() {
