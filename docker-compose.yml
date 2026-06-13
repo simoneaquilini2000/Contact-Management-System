@@ -92,19 +92,19 @@ services:
   # ──────────────────────────────────────────────
   # Angular frontend (served by Nginx)
   # ──────────────────────────────────────────────
-  # frontend:
-  #   build:
-  #     context: ./frontend                # folder containing package.json / angular.json
-  #     dockerfile: Dockerfile
-  #   container_name: frontend
-  #   restart: unless-stopped
-  #   ports:
-  #     - "4200:80"
-  #   depends_on:
-  #     backend:
-  #       condition: service_healthy
-  #   networks:
-  #     - frontend
+  frontend:
+    build:
+      context: ./frontend                # folder containing package.json / angular.json
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - frontend
 
 # ──────────────────────────────────────────────
 # Named volumes
