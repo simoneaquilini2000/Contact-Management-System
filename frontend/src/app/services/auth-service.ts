@@ -17,9 +17,10 @@ export class AuthService {
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_KEY = 'refresh_token';
 
-  private readonly keycloakUrl = 'http://localhost/keycloak'; // TODO: take Keycloak data from ENV
+  private readonly keycloakUrl = 'http://localhost:8180'; // TODO: take Keycloak data from ENV
   private readonly realm = 'contact-management-system';
   private readonly clientId = 'contact-management-spring-boot';
+  private readonly clientSecret = 'GZblE8M3oCC0gSqrYWLrNcIpK1ialWEQ';
 
   private get tokenEndpoint(): string {
     return `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
@@ -31,6 +32,7 @@ export class AuthService {
     const body = new URLSearchParams({
       grant_type: 'password',
       client_id: this.clientId,
+      client_secret: this.clientSecret,
       username: email,
       password: password
     });

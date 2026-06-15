@@ -18,7 +18,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Angular outputs to dist/<project-name>/browser (Angular 17+)
 # Adjust the source path to match your project name if needed
-COPY --from=build /app/dist/frontend /usr/share/nginx/html
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 
 # Nginx config that supports Angular's HTML5 routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf

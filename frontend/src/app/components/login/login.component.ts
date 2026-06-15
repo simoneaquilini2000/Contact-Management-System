@@ -5,11 +5,11 @@ import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.html',
+  templateUrl: './login.component.html',
   standalone: false,
-  styleUrls: ['./login.scss']
+  styleUrls: ['./login.component.scss']
 })
-export class Login implements OnInit {
+export class LoginComponent implements OnInit {
   form!: FormGroup;
   loading = false;
   error = '';
