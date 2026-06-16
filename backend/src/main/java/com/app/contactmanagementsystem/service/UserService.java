@@ -26,6 +26,8 @@ public class UserService {
         String userName = authUtils.getClaim("name");
         String userEmail = authUtils.getClaim("email");
 
+        log.info("Current user ID: {}, name: {}, email: {}", userId, userName, userEmail);
+
         User user = new User();
         user.setId(userId);
         user.setName(userName);

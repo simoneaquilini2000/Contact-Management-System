@@ -5,8 +5,8 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 export interface UserInfo{
-  name: String,
-  email: String
+  name: string,
+  email: string
 }
 
 @Injectable({
@@ -19,9 +19,6 @@ export class UserService {
   constructor(private client: HttpClient, private authService: AuthService) {}
 
   getUserInfo() {
-    if (!this.authService.isLoggedIn()) {
-      throw new Error('User is not logged in');
-    }
 
     // Assuming the AuthService has a method to get user info
     return this.client.get<UserInfo>(`${this.userApiEndpoint}/api/user`).pipe(

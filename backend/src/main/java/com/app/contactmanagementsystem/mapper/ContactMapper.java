@@ -17,6 +17,7 @@ public class ContactMapper {
         dto.setId(contact.getId());
         dto.setName(contact.getName());
         dto.setSurname(contact.getSurname());
+        dto.setPhone(contact.getPhone());
         return dto;
     }
 
@@ -27,6 +28,7 @@ public class ContactMapper {
         ContactEntity entity = new ContactEntity();
         entity.setName(contactDTO.getName());
         entity.setSurname(contactDTO.getSurname());
+        entity.setPhone(contactDTO.getPhone());
         return entity;
     }
 }

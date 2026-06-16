@@ -1,1 +1,102 @@
-<p>contact-form works!</p>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+
+    <!-- Form -->
+    <div class="bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-700">
+           <!-- Logo / title -->
+        <div class="text-center mb-8">
+            <p class="font-medium text-slate-300 mt-2 text-sm">{{ isUpdate ? 'Update contact information' : 'Create a new contact' }}</p>
+        </div>
+
+      <form [formGroup]="contactForm" (ngSubmit)="submitContactForm(contactForm.value)" >
+
+        <!-- Name -->
+        <div class="mb-5">
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">
+            Name
+          </label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="John"
+            class="w-full px-4 py-2.5 rounded-lg bg-slate-700 border border-slate-600
+                   text-white placeholder-slate-400 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+                   transition duration-150"
+          />
+          <p
+            class="mt-1.5 text-xs text-red-400"
+            *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+            Please enter a valid name
+          </p>
+        </div>
+
+        <!-- Surname -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">
+            Surname
+          </label>
+          <input
+            type="text"
+            formControlName="surname"
+            placeholder="Doe"
+            class="w-full px-4 py-2.5 rounded-lg bg-slate-700 border border-slate-600
+                   text-white placeholder-slate-400 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+                   transition duration-150"
+          />
+          <p
+            class="mt-1.5 text-xs text-red-400"
+            *ngIf="contactForm.get('surname')?.invalid && contactForm.get('surname')?.touched">
+            Please enter a valid surname
+          </p>
+        </div>
+        
+        <!-- Phone number -->
+         <div class="mb-6">
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">
+            Phone number
+          </label>
+          <input
+            type="text"
+            formControlName="phone"
+            placeholder="1234567890"
+            class="w-full px-4 py-2.5 rounded-lg bg-slate-700 border border-slate-600
+                   text-white placeholder-slate-400 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+                   transition duration-150"
+          />
+          <p
+            class="mt-1.5 text-xs text-red-400"
+            *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+            Please enter a valid phone number
+          </p>
+        </div>
+
+        <!-- Submit -->
+         <div class="w-full mb-1 py-2.5 px-4 flex justify-end">
+            <button
+                type="submit"
+                [disabled]="loading || contactForm.invalid"
+                class="w-4/6 mr-1  rounded-lg font-semibold text-sm
+                        bg-indigo-600 hover:bg-indigo-500 text-white
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        transition duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800">
+                    {{ isUpdate ? 'Update' : 'Create' }}
+            </button>
+
+            <button
+                type="button"
+                (click)="closeForm()"
+                [disabled]="loading"
+                class="w-2/6 ml-1 rounded-lg font-semibold text-sm
+                        bg-slate-600 hover:bg-slate-500 text-white
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        transition duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800">
+                    Cancel
+            </button>
+         </div>
+
+      </form>
+    </div>
+
+  </div>

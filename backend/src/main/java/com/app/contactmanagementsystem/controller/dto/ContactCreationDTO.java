@@ -14,4 +14,6 @@ public class ContactCreationDTO {
     private String name;
 
     private String surname;
+
+    private String phone;
 }

@@ -73,6 +73,7 @@ public class ContactService {
                 .map(contact -> {
                     contact.setName(contactDTO.getName());
                     contact.setSurname(contactDTO.getSurname());
+                    contact.setPhone(contactDTO.getPhone());
                     contactRepository.save(contact);
                     return contactMapper.toDto(contact);
                 })

@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 export interface Contact {
   id: number;
   name: string;
-  email: string;
-  // phone: string;
+  surname: string;
+  phone: string;
 }
 
 @Injectable({
@@ -47,6 +47,8 @@ export class ContactService {
 
   deleteContact(id: number) {
     this.checkUserLoggedIn();
-    return this.client.delete(`${this.contactApiEndpoint}/api/contacts/${id}`);
+    return this.client.delete(`${this.contactApiEndpoint}/api/contacts/${id}`, {
+      responseType: 'text'
+    });
   }
 }

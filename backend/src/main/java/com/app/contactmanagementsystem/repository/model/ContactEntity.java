@@ -35,6 +35,9 @@ public class ContactEntity {
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @Column(name = "phone", nullable = false)
+    private String phone;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
