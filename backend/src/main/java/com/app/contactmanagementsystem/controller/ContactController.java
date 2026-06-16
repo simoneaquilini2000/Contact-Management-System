@@ -35,12 +35,13 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createContact(
+    public ResponseEntity<Long> createContact(
         @RequestBody @Validated ContactCreationDTO contactDTO
     ) {
         log.info("Creating a new contact: {}", contactDTO);
-        contactService.createContact(contactDTO);
-        return ResponseEntity.ok("Contact created successfully!");
+        Long newContactId = contactService.createContact(contactDTO);
+        log.info("Created contact with id {}", newContactId);
+        return ResponseEntity.ok(newContactId);
     }
 
     @PutMapping("/{id}")

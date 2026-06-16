@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Redirect if already logged in
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/cards']);
+      this.router.navigate(['/contacts']);
     }
 
     this.form = this.fb.group({
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.form.value;
 
     this.authService.login(email, password).subscribe({
-      next: () => this.router.navigate(['/cards']),
+      next: () => this.router.navigate(['/contacts']),
       error: (err: Error) => {
         this.error = err.message;
         this.loading = false;

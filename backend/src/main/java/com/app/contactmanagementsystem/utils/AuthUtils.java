@@ -7,13 +7,18 @@ import org.springframework.stereotype.Component;
 
 import com.app.contactmanagementsystem.exceptions.AuthenticationNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class AuthUtils {
 
     public Jwt getCurrentJwt() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Current authentication: {}", auth);
         if (auth instanceof JwtAuthenticationToken jwtAuth) {
-            return jwtAuth.getToken();
+            var token = jwtAuth.getToken();
+            return token;
         }
         throw new AuthenticationNotFoundException("No JWT authentication found in security context");
     }

@@ -1,0 +1,19 @@
+<div class="flex items-center align-top w-full px-4 py-3 bg-gray-100">
+  <div class="w-1/3 " *ngIf="userInfo">
+    Bentornato {{ userInfo.name}}!
+  </div>
+
+    <div class="mb-4 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm"
+    *ngIf="error">
+          {{ error }}
+    </div>
+
+  <div class="ml-auto">
+    <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" (click)="logout()">
+      Logout
+    </button>
+  </div>
+
+  <app-card-list/>
+  <app-contact-form *ngIf="contactFormEnabled" [isUpdate]="isUpdate" (close)="closeContactForm()"></app-contact-form>
+</div>

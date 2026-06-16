@@ -37,16 +37,16 @@ public class ContactService {
                 .collect(Collectors.toList());
     }
 
-    public ContactResponseDTO createContact(ContactCreationDTO contactDTO) {
+    public Long createContact(ContactCreationDTO contactDTO) {
         log.info("Creating a new contact: {}", contactDTO);
         // Implementation for creating a contact goes here
         User user = userService.getCurrentUser();
 
         ContactEntity contactEntity = contactMapper.toEntity(contactDTO);
         contactEntity.setUserId(user.getId());
-        contactRepository.save(contactEntity);
+        ContactEntity createdContact = contactRepository.save(contactEntity);
 
-        return contactMapper.toDto(contactEntity);
+        return createdContact.getId();
     }
 
     public ContactResponseDTO getContactById(Long id) {

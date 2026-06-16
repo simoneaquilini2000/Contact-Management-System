@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const cloned = token && !isAuthRequest
       ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
       : req;
-
+    
     return next.handle(cloned).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 401) {

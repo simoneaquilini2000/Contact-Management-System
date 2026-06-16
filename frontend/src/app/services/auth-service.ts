@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export interface TokenResponse {
   access_token: string;
@@ -26,7 +27,7 @@ export class AuthService {
     return `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string): Observable<TokenResponse> {
     const body = new URLSearchParams({
@@ -55,6 +56,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_KEY);
+    this.router.navigate(['/login']);
   }
 
   getAccessToken(): string | null {
