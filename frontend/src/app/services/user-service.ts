@@ -14,14 +14,16 @@ export interface UserInfo{
 })
 export class UserService {
 
-  private readonly userApiEndpoint = "http://localhost:8080"
-
   constructor(private client: HttpClient, private authService: AuthService) {}
+
+  private getUserApiUrl(): string {
+    return this.authService.getConfig().apiUrl;
+  }
 
   getUserInfo() {
 
     // Assuming the AuthService has a method to get user info
-    return this.client.get<UserInfo>(`${this.userApiEndpoint}/api/user`).pipe(
+    return this.client.get<UserInfo>(`${this.getUserApiUrl()}/api/user`).pipe(
       catchError(err => {
               const message = `Couldn't fetch user data`;
               console.log(message)

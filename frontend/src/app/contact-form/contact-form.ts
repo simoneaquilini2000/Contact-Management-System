@@ -24,8 +24,8 @@ export class ContactForm {
   ngOnInit() {
 
     this.contactForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(1)]],
-      surname: ['', [Validators.required, Validators.minLength(1)]],
+      name: ['', [Validators.required, Validators.minLength(1), Validators.pattern(/^[a-zA-Z]+$/)]],
+      surname: ['', [Validators.required, Validators.minLength(1), Validators.pattern(/^[a-zA-Z]+$/)]],
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   

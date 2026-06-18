@@ -14,6 +14,12 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const isConfigRequest = req.url.includes('config');
+
+    if(isConfigRequest) {
+      return next.handle(req);
+    }
+
     const token = this.authService.getAccessToken();
 
     // Don't attach token to the Keycloak login request itself

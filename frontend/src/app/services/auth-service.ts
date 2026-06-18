@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AppConfig, ConfigService } from './config-service';
 
 export interface TokenResponse {
   access_token: string;
@@ -17,23 +18,24 @@ export interface TokenResponse {
 export class AuthService {
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_KEY = 'refresh_token';
+  private appConfig!: AppConfig;
 
-  private readonly keycloakUrl = 'http://localhost:8180'; // TODO: take Keycloak data from ENV
-  private readonly realm = 'contact-management-system';
-  private readonly clientId = 'contact-management-spring-boot';
-  private readonly clientSecret = 'GZblE8M3oCC0gSqrYWLrNcIpK1ialWEQ';
+  constructor(private http: HttpClient, private configService: ConfigService, private router: Router) {}
 
-  private get tokenEndpoint(): string {
-    return `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
+  getConfig(): AppConfig {
+    this.appConfig = this.configService.get();
+    return this.appConfig;
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private get tokenEndpoint(): string {
+    return `${this.getConfig().keycloakUrl}/realms/${this.getConfig().keycloakRealm}/protocol/openid-connect/token`;
+  }
 
   login(email: string, password: string): Observable<TokenResponse> {
     const body = new URLSearchParams({
       grant_type: 'password',
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
+      client_id: this.getConfig().keycloakClientId,
+      client_secret: this.getConfig().keycloakClientSecret,
       username: email,
       password: password
     });

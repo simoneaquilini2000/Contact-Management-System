@@ -1,4 +1,4 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { APP_INITIALIZER, NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
@@ -9,6 +9,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContactPage } from './contact-page/contact-page';
 import { ContactForm } from './contact-form/contact-form';
+import { ConfigService } from './services/config-service';
+
+function initializeApp(configService: ConfigService) {
+  return () => configService.loadConfig();
+}
 
 @NgModule({
   declarations: [App, LoginComponent, ContactPage, ContactForm],
@@ -20,6 +25,12 @@ import { ContactForm } from './contact-form/contact-form';
       useClass: AuthInterceptor,
       multi: true,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [ConfigService],
+      multi: true
+    }
   ],
   bootstrap: [App],
 })
