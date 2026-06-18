@@ -13,6 +13,8 @@ RUN npm run build -- --configuration production
 # ── Stage 2: serve ───────────────────────────────────────────────────────────
 FROM nginx:1.27-alpine
 
+RUN apk add --no-cache gettext
+
 # Remove default static assets
 RUN rm -rf /usr/share/nginx/html/*
 
@@ -23,6 +25,9 @@ COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 # Nginx config that supports Angular's HTML5 routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -98,6 +98,12 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     restart: unless-stopped
+    environment:
+      KEYCLOAK_URL: http://localhost:8180
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-contact-management-system}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:-contact-management-spring-boot}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET:-GZblE8M3oCC0gSqrYWLrNcIpK1ialWEQ}
+      API_URL: http://localhost:8080
     ports:
       - "4222:80"
     depends_on:
