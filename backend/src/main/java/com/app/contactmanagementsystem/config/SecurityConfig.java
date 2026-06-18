@@ -15,6 +15,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * TODO: 
+ * - unit test for all classes in BE
+ * - admin role management with keycloak + endpoint for admin to fetch users and their contacts
+ */
 
 @Configuration
 @EnableWebSecurity
