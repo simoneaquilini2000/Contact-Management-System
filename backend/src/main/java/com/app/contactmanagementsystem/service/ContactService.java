@@ -3,8 +3,14 @@ package com.app.contactmanagementsystem.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.app.contactmanagementsystem.controller.dto.ContactAdminDTO;
 import com.app.contactmanagementsystem.controller.dto.ContactCreationDTO;
 import com.app.contactmanagementsystem.controller.dto.ContactResponseDTO;
 import com.app.contactmanagementsystem.exceptions.ContactNotFoundException;
@@ -25,6 +31,19 @@ public class ContactService {
     private final ContactMapper contactMapper;
 
     private final UserService userService;
+
+    public Page<ContactAdminDTO> getUserContacts(int page, int size) {
+        log.info("Fetching contacts for user with pagination: page {}, size {}", page, size);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ContactEntity> contactPage = contactRepository.findAll(pageable);
+
+        List<ContactAdminDTO> contactDTOs = contactPage.stream()
+                .map(contactMapper::toAdminDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(contactDTOs, pageable, contactPage.getTotalElements());
+    }
 
     public List<ContactResponseDTO> getUserContacts() {
         log.info("Fetching all contacts from the database");
