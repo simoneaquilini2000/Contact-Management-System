@@ -37,10 +37,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HTTP_PORT: 8180
-      KC_LOG_LEVEL: INFO
-      # KC_HOSTNAME: localhost
-      # KC_HOSTNAME_PORT: 8180
-      # KC_HOSTNAME_STRICT: false 
+      KC_LOG_LEVEL: INFO 
     ports:
       - "8180:8180"
     depends_on:

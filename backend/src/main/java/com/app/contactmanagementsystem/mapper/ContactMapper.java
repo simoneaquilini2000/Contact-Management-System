@@ -2,6 +2,7 @@ package com.app.contactmanagementsystem.mapper;
 
 import org.springframework.stereotype.Component;
 
+import com.app.contactmanagementsystem.controller.dto.ContactAdminDTO;
 import com.app.contactmanagementsystem.controller.dto.ContactCreationDTO;
 import com.app.contactmanagementsystem.controller.dto.ContactResponseDTO;
 import com.app.contactmanagementsystem.repository.model.ContactEntity;
@@ -18,6 +19,19 @@ public class ContactMapper {
         dto.setName(contact.getName());
         dto.setSurname(contact.getSurname());
         dto.setPhone(contact.getPhone());
+        return dto;
+    }
+
+    public ContactAdminDTO toAdminDto(ContactEntity contact) {
+        if (contact == null) {
+            return null;
+        }
+        ContactAdminDTO dto = new ContactAdminDTO();
+        dto.setId(contact.getId());
+        dto.setName(contact.getName());
+        dto.setSurname(contact.getSurname());
+        dto.setPhone(contact.getPhone());
+        dto.setUserId(contact.getUserId().toString());
         return dto;
     }
 
